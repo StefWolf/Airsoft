@@ -6,16 +6,17 @@ public class BB : MonoBehaviour
 {
     private Rigidbody rb;
     private float backspinDrag;
+    [SerializeField] private float lifeTime = 20f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Destroy(this.gameObject, 5f);
+        Destroy(this.gameObject, lifeTime);
     }
 
     public void SetBackspinDrag(float newBackspinDrag)
     {
-        backspinDrag = newBackspinDrag; // Atualiza o backspinDrag
+        backspinDrag = newBackspinDrag;
     }
 
     void FixedUpdate()
@@ -27,7 +28,7 @@ public class BB : MonoBehaviour
     {
         float speed = rb.velocity.magnitude;
         Vector3 velocityDirection = rb.velocity.normalized;
-        Vector3 perpendicularDirection = Vector3.Cross(velocityDirection, Vector3.up).normalized;
+        Vector3 perpendicularDirection = Vector3.up;
 
         float liftForce = Mathf.Sqrt(speed) * backspinDrag;
 
