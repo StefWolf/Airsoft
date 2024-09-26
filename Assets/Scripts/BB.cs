@@ -29,6 +29,7 @@ public class BB : MonoBehaviour
         float speed = rb.velocity.magnitude;
         float liftForce = Mathf.Sqrt(speed) * backspinDrag;
         
+        // TODO - corrigir vetor normal ao girar arma
         Vector3 perpendicularDirection = Vector3.up.normalized;
 
         rb.AddForce(perpendicularDirection * liftForce * Time.fixedDeltaTime, ForceMode.Force);
