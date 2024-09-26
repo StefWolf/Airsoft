@@ -27,10 +27,9 @@ public class BB : MonoBehaviour
     private void ApplyMagnusEffect()
     {
         float speed = rb.velocity.magnitude;
-        Vector3 velocityDirection = rb.velocity.normalized;
-        Vector3 perpendicularDirection = Vector3.up;
-
         float liftForce = Mathf.Sqrt(speed) * backspinDrag;
+        
+        Vector3 perpendicularDirection = Vector3.up.normalized;
 
         rb.AddForce(perpendicularDirection * liftForce * Time.fixedDeltaTime, ForceMode.Force);
     }
