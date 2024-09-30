@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class BB : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Rigidbody rb;
+    private float backspinDrag;
+    [SerializeField] private float lifeTime = 20f;
+
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        Destroy(this.gameObject, lifeTime);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetBackspinDrag(float newBackspinDrag)
     {
+        backspinDrag = newBackspinDrag;
+    }
+
+    void FixedUpdate()
+    {
+        ApplyMagnusEffect();
+    }
+
+    private void ApplyMagnusEffect()
+    {
+        float speed = rb.velocity.magnitude;
+        float liftForce = Mathf.Sqrt(speed) * backspinDrag;
         
+        // TODO - corrigir vetor normal ao girar arma
+        Vector3 perpendicularDirection = Vector3.up.normalized;
+
+        rb.AddForce(perpendicularDirection * liftForce * Time.fixedDeltaTime, ForceMode.Force);
     }
 }
