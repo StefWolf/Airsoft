@@ -18,20 +18,16 @@ public class Bullet : MonoBehaviour
     {
         if(Input.GetButton("Fire1"))
         {
-            Debug.Log("Atirou");
             Shoot();
         }
 
-        // Lógica para alterar o backspinDrag
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             backspinDrag += 0.0001f;
-            Debug.Log("Backspin Drag aumentado: " + backspinDrag);
         }
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
             backspinDrag = Mathf.Max(0f, backspinDrag - 0.0001f);
-            Debug.Log("Backspin Drag diminuído: " + backspinDrag);
         }
     }
 
@@ -44,7 +40,6 @@ public class Bullet : MonoBehaviour
 
         bulletRb.velocity = firePoint.transform.forward * initialVelocity;
         bulletInstance.GetComponent<BB>().SetBackspinDrag(backspinDrag);
-
-        Debug.Log("initialVelocity: " + initialVelocity);
+        bulletInstance.GetComponent<BB>().SetGunTransform(transform);
     }
 }
