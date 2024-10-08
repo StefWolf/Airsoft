@@ -16,35 +16,31 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
-        {
-            Debug.Log("Atirou");
-            Shoot();
-        }
 
         // Lógica para alterar o backspinDrag
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             backspinDrag += 0.0001f;
-            Debug.Log("Backspin Drag aumentado: " + backspinDrag);
+           // Debug.Log("Backspin Drag aumentado: " + backspinDrag);
         }
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
             backspinDrag = Mathf.Max(0f, backspinDrag - 0.0001f);
-            Debug.Log("Backspin Drag diminuído: " + backspinDrag);
+           // Debug.Log("Backspin Drag diminuído: " + backspinDrag);
         }
     }
 
-    void Shoot()
+    public void Shoot()
     {
         GameObject bulletInstance = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
         Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
-        
+
         float initialVelocity = Mathf.Sqrt((2 * energyInJoules) / bulletRb.mass);
 
         bulletRb.velocity = firePoint.transform.forward * initialVelocity;
         bulletInstance.GetComponent<BB>().SetBackspinDrag(backspinDrag);
+        bulletInstance.GetComponent<BB>().SetGunTransform(transform);
 
-        Debug.Log("initialVelocity: " + initialVelocity);
+        // Debug.Log("initialVelocity: " + initialVelocity);
     }
 }

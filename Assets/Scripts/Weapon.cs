@@ -8,16 +8,23 @@ public class Weapon : MonoBehaviour
 
     public string nameOfCharger = "";
 
-    private Charger currentCharger;
+    public Charger currentCharger;
+
+    public Bullet bullet;
 
     public bool CanShoot() {
-        if (nameOfCharger == currentCharger.name && currentCharger.IsWithBbs()) return true;
+        if (nameOfCharger == currentCharger.type && currentCharger.IsWithBbs()) return true;
 
         return false;
     }
 
     public bool CanSetCharger(Charger charger) {
-        if (nameOfCharger == charger.name) return true;
+        if(charger != null)
+        {
+            if (nameOfCharger == charger.type) return true;
+            return false;
+        }
+
         return false;
     }
 
