@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private GameObject bulletPrefab;
+    public GameObject bulletPrefab;
     [SerializeField] private GameObject firePoint;
     [SerializeField] private float energyInJoules = 1.49f;
     [SerializeField] private float backspinDrag = 0.001f;
