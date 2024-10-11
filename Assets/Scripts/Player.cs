@@ -56,6 +56,13 @@ public class Player : MonoBehaviour
             {
                 if (collision.gameObject.CompareTag("Weapon"))
                 {
+                    if (currentWeapon != null) //Se tiver uma arma em mãos, solta ela para petgar a outra
+                    {
+                        Rigidbody lastWeapon = currentWeapon.gameObject.GetComponent<Rigidbody>();
+                        lastWeapon.isKinematic = false;
+                        currentWeapon.transform.SetParent(null);
+                    }
+
                     currentWeapon = collision.gameObject.GetComponent<Weapon>();
                     if (currentWeapon.GetCharger() != null)
                     {
@@ -115,6 +122,7 @@ public class Player : MonoBehaviour
                             chargerRigidbody.isKinematic = true; // Desabilitar completamente a física
                         }
 
+                        //Uma gambiarra logo abaixo que precisa de solução
                         collision.transform.SetParent(playerCamera.transform.Find("MP5").transform);
                     }
                 }
