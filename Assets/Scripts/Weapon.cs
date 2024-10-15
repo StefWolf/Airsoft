@@ -36,4 +36,8 @@ public class Weapon : MonoBehaviour
     {
         return currentCharger;
     }
+
+    public void DecreaseBBs() {
+        currentCharger.ShootBullet();
+    }
 }

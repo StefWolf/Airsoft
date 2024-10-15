@@ -9,18 +9,32 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float energyInJoules = 1.49f;
     [SerializeField] private float backspinDrag = 0.001f;
     [SerializeField] private float scrollSensitivity = 0.01f;
+    [SerializeField] private float delay = 0.22f;
+    private bool waitingDelay, invokeFlag, fullAuto;
+    private Weapon weapon;
 
     void Start()
     {
-        
+        fullAuto = false;
+        waitingDelay = false;
+        invokeFlag = false;
+        weapon = GetComponent<Weapon>();
     }
 
     void Update()
     {
-        if(Input.GetButton("Fire1"))
+        if((Input.GetMouseButton(0) || fullAuto) && weapon.CanShoot() && !waitingDelay)
         {
-            Debug.Log("Atirou");
             this.Shoot();
+        }
+
+        if (invokeFlag && waitingDelay) {
+            invokeFlag = false;
+            Invoke("SetWaitingDelayFalse", delay);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F)){
+            fullAuto = !fullAuto;
         }
 
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
@@ -33,8 +47,14 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void SetWaitingDelayFalse() {
+        this.waitingDelay = false;
+    }
+
     public void Shoot()
     {
+        invokeFlag = true;
+        waitingDelay = true;
         GameObject bulletInstance = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
         Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
         
@@ -43,6 +63,7 @@ public class Bullet : MonoBehaviour
         bulletRb.velocity = firePoint.transform.forward * initialVelocity;
         bulletInstance.GetComponent<BB>().SetBackspinDrag(backspinDrag);
         bulletInstance.GetComponent<BB>().SetGunTransform(transform);
+        weapon.DecreaseBBs();
 
         // Debug.Log("initialVelocity: " + initialVelocity);
     }

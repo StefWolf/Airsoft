@@ -27,22 +27,14 @@ public class Player : MonoBehaviour
    
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (currentWeapon != null)
         {
-            if (currentWeapon != null)
-            {
-                if(currentWeapon.currentCharger != null) {
-                    if (currentWeapon.CanShoot())
-                    {
-                        currentWeapon.bullet.Shoot();
-                        currentWeapon.GetCharger().ShootBullet();
-                        textAmmunition.text = currentWeapon.GetCharger().currentValue.ToString();
-                    }
-                }
+            if(currentWeapon.currentCharger != null) {
+                textAmmunition.text = currentWeapon.GetCharger().currentValue.ToString();
             }
         }
     }
-    public Camera playerCamera; // Referência à câmera do player
+    public Camera playerCamera; // Referï¿½ncia ï¿½ cï¿½mera do player
 
     public void OnTriggerStay(Collider collision)
     {
@@ -56,7 +48,7 @@ public class Player : MonoBehaviour
             {
                 if (collision.gameObject.CompareTag("Weapon"))
                 {
-                    if (currentWeapon != null) //Se tiver uma arma em mãos, solta ela para petgar a outra
+                    if (currentWeapon != null) //Se tiver uma arma em mï¿½os, solta ela para petgar a outra
                     {
                         Rigidbody lastWeapon = currentWeapon.gameObject.GetComponent<Rigidbody>();
                         lastWeapon.isKinematic = false;
@@ -76,15 +68,15 @@ public class Player : MonoBehaviour
                     Rigidbody weaponRigidbody = collision.gameObject.GetComponent<Rigidbody>();
                     if (weaponRigidbody != null)
                     {
-                        weaponRigidbody.isKinematic = true; // Desabilitar completamente a física
+                        weaponRigidbody.isKinematic = true; // Desabilitar completamente a fï¿½sica
                     }
 
-                    // Definir a arma como filha da câmera do jogador
+                    // Definir a arma como filha da cï¿½mera do jogador
                     collision.transform.SetParent(playerCamera.transform);
                     textInfoGrab.gameObject.SetActive(false);
 
-                    // Ajustar a posição e rotação da arma em relação à câmera
-                    collision.transform.localPosition = new Vector3(0.141f, -0.186f, 1.45f); // Ajuste conforme necessário
+                    // Ajustar a posiï¿½ï¿½o e rotaï¿½ï¿½o da arma em relaï¿½ï¿½o ï¿½ cï¿½mera
+                    collision.transform.localPosition = new Vector3(0.141f, -0.186f, 1.45f); // Ajuste conforme necessï¿½rio
                     collision.transform.localRotation = Quaternion.identity;
 
                     textInfoWeapon.text = currentWeapon.name;
@@ -104,7 +96,7 @@ public class Player : MonoBehaviour
                     Charger c = collision.gameObject.GetComponent<Charger>();
                     if (currentWeapon.CanSetCharger(c))
                     {
-                        Debug.Log("É o carregador certo");
+                        Debug.Log("ï¿½ o carregador certo");
                         if (currentWeapon.GetCharger() != null)
                         {
                             Rigidbody lastCharger = currentWeapon.GetCharger().gameObject.GetComponent<Rigidbody>();
@@ -119,10 +111,10 @@ public class Player : MonoBehaviour
                         Rigidbody chargerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
                         if (chargerRigidbody != null)
                         {
-                            chargerRigidbody.isKinematic = true; // Desabilitar completamente a física
+                            chargerRigidbody.isKinematic = true; // Desabilitar completamente a fï¿½sica
                         }
 
-                        //Uma gambiarra logo abaixo que precisa de solução
+                        //Uma gambiarra logo abaixo que precisa de soluï¿½ï¿½o
                         collision.transform.SetParent(playerCamera.transform.Find("MP5").transform);
                     }
                 }
