@@ -41112,6 +41112,7 @@ MonoBehaviour:
   firePoint: {fileID: 244494040}
   energyInJoules: 1.49
   backspinDrag: 0.001
+  scrollSensitivity: 0.001
 --- !u!114 &1627641863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45100,6 +45101,7 @@ MonoBehaviour:
   firePoint: {fileID: 2086330003}
   energyInJoules: 1.49
   backspinDrag: 0.001
+  scrollSensitivity: 0.01
 --- !u!4 &1784935606
 Transform:
   m_ObjectHideFlags: 0

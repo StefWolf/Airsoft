@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private GameObject firePoint;
     [SerializeField] private float energyInJoules = 1.49f;
     [SerializeField] private float backspinDrag = 0.001f;
+    [SerializeField] private float scrollSensitivity = 0.01f;
 
     void Start()
     {
@@ -16,17 +17,19 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-
-        // Lógica para alterar o backspinDrag
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if(Input.GetButton("Fire1"))
         {
-            backspinDrag += 0.0001f;
-           // Debug.Log("Backspin Drag aumentado: " + backspinDrag);
+            Debug.Log("Atirou");
+            this.Shoot();
         }
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scrollInput != 0)
         {
-            backspinDrag = Mathf.Max(0f, backspinDrag - 0.0001f);
-           // Debug.Log("Backspin Drag diminuído: " + backspinDrag);
+            backspinDrag += scrollInput * scrollSensitivity;
+            backspinDrag = Mathf.Max(0f, backspinDrag);
+            Debug.Log("Backspin Drag atualizado: " + backspinDrag);
         }
     }
 
@@ -34,7 +37,7 @@ public class Bullet : MonoBehaviour
     {
         GameObject bulletInstance = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
         Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
-
+        
         float initialVelocity = Mathf.Sqrt((2 * energyInJoules) / bulletRb.mass);
 
         bulletRb.velocity = firePoint.transform.forward * initialVelocity;
