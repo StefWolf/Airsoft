@@ -67,7 +67,9 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\VirtualInputs\UIVirtualJoystick.cs" />
     <Compile Include="Assets\StarterAssets\Mobile\Scripts\Utilities\MobileDisableAutoSwitchControls.cs" />
+    <Compile Include="Assets\Scripts\Target.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
+    <Compile Include="Assets\Scripts\Timer.cs" />
     <Compile Include="Assets\Scripts\Charger.cs" />
     <Compile Include="Assets\Scripts\BB.cs" />
     <Compile Include="Assets\Scripts\Transition.cs" />

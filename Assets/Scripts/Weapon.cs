@@ -12,8 +12,13 @@ public class Weapon : MonoBehaviour
 
     public Bullet bullet;
 
+    public GameObject chargerFix;
+
     public bool CanShoot() {
-        if (nameOfCharger == currentCharger.type && currentCharger.IsWithBbs()) return true;
+        if(currentCharger != null)
+        {
+            if (nameOfCharger == currentCharger.type && currentCharger.IsWithBbs()) return true;
+        }
 
         return false;
     }
@@ -21,7 +26,10 @@ public class Weapon : MonoBehaviour
     public bool CanSetCharger(Charger charger) {
         if(charger != null)
         {
-            if (nameOfCharger == charger.type) return true;
+            if (nameOfCharger == charger.type) {
+                chargerFix.SetActive(true);
+                return true;
+            }
             return false;
         }
 

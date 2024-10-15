@@ -76,8 +76,19 @@ public class Player : MonoBehaviour
                     textInfoGrab.gameObject.SetActive(false);
 
                     // Ajustar a posi��o e rota��o da arma em rela��o � c�mera
-                    collision.transform.localPosition = new Vector3(0.141f, -0.186f, 1.45f); // Ajuste conforme necess�rio
-                    collision.transform.localRotation = Quaternion.identity;
+
+                    if(currentWeapon.name == "Pistola")
+                    {
+                        collision.transform.localPosition = new Vector3(0.025f, -0.171f, 0.418f);
+                        collision.transform.localRotation = Quaternion.Euler(-2.592f, -186.5f, 0.147f);
+                    }
+
+                    if (currentWeapon.name == "MP5")
+                    {
+                        collision.transform.localPosition = new Vector3(0.141f, -0.186f, 1.45f);
+                        collision.transform.localRotation = Quaternion.identity;
+                    }
+
 
                     textInfoWeapon.text = currentWeapon.name;
                     textMass.text = currentWeapon.bullet.bulletPrefab.gameObject.GetComponent<Rigidbody>().mass.ToString();
@@ -115,7 +126,11 @@ public class Player : MonoBehaviour
                         }
 
                         //Uma gambiarra logo abaixo que precisa de solu��o
-                        collision.transform.SetParent(playerCamera.transform.Find("MP5").transform);
+                     
+                            collision.gameObject.SetActive(false);
+
+                      
+                           
                     }
                 }
             }
