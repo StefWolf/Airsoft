@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
 
     public TextMeshProUGUI fullautoText;
 
+    private bool canChangeWeapon = true;
+
     void Start()
     {
         
@@ -69,62 +71,69 @@ public class Player : MonoBehaviour
 
     public void OnTriggerStay(Collider collision)
     {
-        
+        Debug.Log(collision.name);
+        if (collision == null) { Debug.Log(currentWeapon.name); }
         if(collision.tag == "Weapon") {
 
-            if(currentWeapon == null || collision.name != currentWeapon.name)
+            if (currentWeapon == null || collision.name != currentWeapon.name) {
                 ChangeTheInfoGrab("Press E to pick up the weapon");
 
-            if (Input.GetKeyDown(KeyCode.E)) // Pegando uma arma
-            {
-                if (collision.gameObject.CompareTag("Weapon"))
+                if (Input.GetKeyDown(KeyCode.E) && canChangeWeapon) // Pegando uma arma
                 {
-                    if (currentWeapon != null) //Se tiver uma arma em m�os, solta ela para petgar a outra
+                    if (collision.gameObject.CompareTag("Weapon"))
                     {
-                        Rigidbody lastWeapon = currentWeapon.gameObject.GetComponent<Rigidbody>();
-                        lastWeapon.isKinematic = false;
-                        currentWeapon.transform.SetParent(null);
+                        if (currentWeapon != null) //Se tiver uma arma em m�os, solta ela para petgar a outra
+                        {
+                            Debug.Log(currentWeapon);
+                            canChangeWeapon = false;
+                            Rigidbody lastWeapon = currentWeapon.gameObject.GetComponent<Rigidbody>();
+                            lastWeapon.isKinematic = false;
+                            currentWeapon.transform.SetParent(null);
+                        }
+
+                        currentWeapon = collision.gameObject.GetComponent<Weapon>();
+                        if (currentWeapon.GetCharger() != null)
+                        {
+                            textAmmunition.text = currentWeapon.GetCharger().currentValue.ToString();
+                        }
+                        else
+                        {
+                            textAmmunition.text = "0";
+                        }
+
+                        Rigidbody weaponRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+                        if (weaponRigidbody != null)
+                        {
+                            weaponRigidbody.isKinematic = true; // Desabilitar completamente a f�sica
+                        }
+
+                        // Definir a arma como filha da c�mera do jogador
+                        collision.transform.SetParent(playerCamera.transform);
+                        textInfoGrab.gameObject.SetActive(false);
+
+                        // Ajustar a posi��o e rota��o da arma em rela��o � c�mera
+
+                        if (currentWeapon.name == "Pistola")
+                        {
+                            collision.transform.localPosition = new Vector3(0.025f, -0.171f, 0.418f);
+                            collision.transform.localRotation = Quaternion.Euler(-2.592f, -186.5f, 0.147f);
+                        }
+
+                        if (currentWeapon.name == "MP5")
+                        {
+                            collision.transform.localPosition = new Vector3(0.141f, -0.186f, 1.45f);
+                            collision.transform.localRotation = Quaternion.identity;
+                        }
+
+
+                        textInfoWeapon.text = currentWeapon.name;
+                        textMass.text = currentWeapon.bullet.bulletPrefab.gameObject.GetComponent<Rigidbody>().mass.ToString();
                     }
-
-                    currentWeapon = collision.gameObject.GetComponent<Weapon>();
-                    if (currentWeapon.GetCharger() != null)
-                    {
-                        textAmmunition.text = currentWeapon.GetCharger().currentValue.ToString();
-                    }
-                    else
-                    {
-                        textAmmunition.text = "0";
-                    }
-
-                    Rigidbody weaponRigidbody = collision.gameObject.GetComponent<Rigidbody>();
-                    if (weaponRigidbody != null)
-                    {
-                        weaponRigidbody.isKinematic = true; // Desabilitar completamente a f�sica
-                    }
-
-                    // Definir a arma como filha da c�mera do jogador
-                    collision.transform.SetParent(playerCamera.transform);
-                    textInfoGrab.gameObject.SetActive(false);
-
-                    // Ajustar a posi��o e rota��o da arma em rela��o � c�mera
-
-                    if(currentWeapon.name == "Pistola")
-                    {
-                        collision.transform.localPosition = new Vector3(0.025f, -0.171f, 0.418f);
-                        collision.transform.localRotation = Quaternion.Euler(-2.592f, -186.5f, 0.147f);
-                    }
-
-                    if (currentWeapon.name == "MP5")
-                    {
-                        collision.transform.localPosition = new Vector3(0.141f, -0.186f, 1.45f);
-                        collision.transform.localRotation = Quaternion.identity;
-                    }
-
-
-                    textInfoWeapon.text = currentWeapon.name;
-                    textMass.text = currentWeapon.bullet.bulletPrefab.gameObject.GetComponent<Rigidbody>().mass.ToString();
+                    Invoke("SetCanChangeWeapon", 1f);
                 }
+
             }
+               
 
         } else if(collision.tag == "Charger") {
 
@@ -166,6 +175,11 @@ public class Player : MonoBehaviour
                 }
             }
         }       
+    }
+
+    private void SetCanChangeWeapon()
+    {
+        canChangeWeapon = true;
     }
 
     public void OnTriggerExit(Collider other)
