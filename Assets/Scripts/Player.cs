@@ -18,7 +18,13 @@ public class Player : MonoBehaviour
     public GameObject textInfoGrab;
 
     public Weapon currentWeapon;
-    
+
+    public AudioSource walking;
+
+    public AudioSource reloadWeapon;
+
+    public TextMeshProUGUI fullautoText;
+
     void Start()
     {
         
@@ -32,7 +38,32 @@ public class Player : MonoBehaviour
             if(currentWeapon.currentCharger != null) {
                 textAmmunition.text = currentWeapon.GetCharger().currentValue.ToString();
             }
+
+            if (!currentWeapon.bullet.fullAuto)
+            {
+                fullautoText.text = "INACTIVE";
+            }
+            else
+            {
+                fullautoText.text = "ACTIVE";
+            }
         }
+
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            if (!walking.isPlaying) // Verifica se o som já está tocando
+            {
+                walking.Play();
+            }
+        }
+        else
+        {
+            if (walking.isPlaying) // Para o som apenas se estiver tocando
+            {
+                walking.Stop();
+            }
+        }
+
     }
     public Camera playerCamera; // Refer�ncia � c�mera do player
 
@@ -118,7 +149,7 @@ public class Player : MonoBehaviour
                         textInfoGrab.gameObject.SetActive(false);
                         currentWeapon.SetCharger(c);
                         textAmmunition.text = currentWeapon.GetCharger().currentValue.ToString();
-
+                        reloadWeapon.Play();
                         Rigidbody chargerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
                         if (chargerRigidbody != null)
                         {

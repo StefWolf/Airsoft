@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -10,8 +11,12 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float backspinDrag = 0.001f;
     [SerializeField] private float scrollSensitivity = 0.01f;
     [SerializeField] private float delay = 0.22f;
-    private bool waitingDelay, invokeFlag, fullAuto;
+    private bool waitingDelay, invokeFlag;
+    public bool fullAuto;
     private Weapon weapon;
+    public AudioSource shoot;
+
+    public TextMeshProUGUI fullautoText; 
 
     void Start()
     {
@@ -57,7 +62,7 @@ public class Bullet : MonoBehaviour
         waitingDelay = true;
         GameObject bulletInstance = Instantiate(bulletPrefab, firePoint.transform.position, firePoint.transform.rotation);
         Rigidbody bulletRb = bulletInstance.GetComponent<Rigidbody>();
-        
+        shoot.Play();
         float initialVelocity = Mathf.Sqrt((2 * energyInJoules) / bulletRb.mass);
 
         bulletRb.velocity = firePoint.transform.forward * initialVelocity;
